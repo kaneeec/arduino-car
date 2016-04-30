@@ -11,52 +11,54 @@ const long IR_LEFT = 16720605;
 const long IR_RIGHT = 16761405;
 const long IR_FORWARDS = 16736925;
 const long IR_BACKWARDS = 16754775;
+const long IR_STAR = 16728765;
+const long IR_HASH = 16732845;
 
 void readIr();
 
 StepperWithDriver stepper(8, 9, 10, 11);
-DCMotor dcmotor(2, 3);
+DCMotor dcMotor(2, 3);
 
-IRrecv irrecv(IR_IN);
-decode_results irValue;
+IRrecv irSensor(IR_IN);
+decode_results irSensorReading;
 
 Direction direction = LEFT;
 
 void setup() {
     Serial.begin(9600);
     stepper.setAngle(360, direction);
-    irrecv.enableIRIn();
+    irSensor.enableIRIn();
 }
 
 void loop() {
     readIr();
     stepper.run();
-    dcmotor.run();
+    dcMotor.run();
 }
 
 void readIr() {
-    if (irrecv.decode(&irValue)) {
-        if (irValue.value == IR_START_STOP) {
-            if (dcmotor.isRunning()) {
-                dcmotor.stop();
+    if (irSensor.decode(&irSensorReading)) {
+        if (irSensorReading.value == IR_START_STOP) {
+            if (dcMotor.isRunning()) {
+                dcMotor.stop();
             } else {
-                dcmotor.start();
+                dcMotor.start();
             }
         }
-        if (irValue.value == IR_LEFT) {
+        if (irSensorReading.value == IR_LEFT) {
             direction = LEFT;
             stepper.setAngle(45, LEFT);
         }
-        if (irValue.value == IR_RIGHT) {
+        if (irSensorReading.value == IR_RIGHT) {
             stepper.setAngle(45, RIGHT);
         }
-        if (irValue.value == IR_FORWARDS) {
-            dcmotor.setDirection(FORWARDS);
+        if (irSensorReading.value == IR_FORWARDS) {
+            dcMotor.setDirection(FORWARDS);
         }
-        if (irValue.value == IR_BACKWARDS) {
-            dcmotor.setDirection(BACKWARDS);
+        if (irSensorReading.value == IR_BACKWARDS) {
+            dcMotor.setDirection(BACKWARDS);
         }
-        Serial.println(irValue.value);
-        irrecv.resume(); // Receive the next value
+        Serial.println(irSensorReading.value);
+        irSensor.resume(); // Receive the next value
     }
 }
