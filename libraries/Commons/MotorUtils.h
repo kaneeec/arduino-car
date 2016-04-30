@@ -1,7 +1,7 @@
 #ifndef LIBRARIES_COMMONS_MOTORUTILS_H_
 #define LIBRARIES_COMMONS_MOTORUTILS_H_
 
-enum Direction {
+enum MotorDirection {
     LEFT, RIGHT, FORWARDS, BACKWARDS
 };
 

@@ -26,7 +26,7 @@ void DCMotor::run() {
     }
 }
 
-void DCMotor::setDirection(Direction direction) {
+void DCMotor::setDirection(MotorDirection direction) {
     this->direction = direction;
 }
 

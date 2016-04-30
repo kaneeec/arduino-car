@@ -34,19 +34,19 @@ void StepperWithDriver::stop() {
     currentStep = 0;
 }
 
-void StepperWithDriver::setSteps(int steps, Direction direction) {
+void StepperWithDriver::setSteps(int steps, MotorDirection direction) {
     this->stepsToGo = steps * STEPS_PER_TURN; 
     this->direction = direction;
 }
 
-void StepperWithDriver::setAngle(int angle, Direction direction) {
+void StepperWithDriver::setAngle(int angle, MotorDirection direction) {
     float partial = (float) angle / 360;
     float steps = STEPS_PER_TURN * STEPS_PER_TURN * partial;
     this->stepsToGo = round(steps);
     this->direction = direction;
 }
 
-void StepperWithDriver::step(Direction direction) {
+void StepperWithDriver::step(MotorDirection direction) {
     if (micros() - lastStepTime >= 1000 && started) {
         switch (motorState) {
             case 0:
@@ -111,7 +111,7 @@ void StepperWithDriver::step(Direction direction) {
     }
 }
 
-void StepperWithDriver::setNextState(Direction direction) {
+void StepperWithDriver::setNextState(MotorDirection direction) {
     motorState += direction == RIGHT ? 1 : -1;
     if (motorState > 7) {
         motorState = 0;

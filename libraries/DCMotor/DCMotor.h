@@ -10,7 +10,7 @@ class DCMotor {
         void start();
         void stop();
         void run();
-        void setDirection(Direction direction);
+        void setDirection(MotorDirection direction);
         bool isRunning();
 
     private:
@@ -18,7 +18,7 @@ class DCMotor {
         int pinGoBackwards;
 
         bool started = false;
-        Direction direction = FORWARDS;
+        MotorDirection direction = FORWARDS;
 
         int getEnabledPin();
         int getDisabledPin();

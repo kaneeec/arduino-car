@@ -7,8 +7,8 @@ class StepperWithDriver {
 
     public:
         StepperWithDriver(int pin1, int pin2, int pin3, int pin4);
-        void setSteps(int steps, Direction direction);
-        void setAngle(int angle, Direction direction);
+        void setSteps(int steps, MotorDirection direction);
+        void setAngle(int angle, MotorDirection direction);
         void run();
 
     private:
@@ -24,12 +24,12 @@ class StepperWithDriver {
         long stepsToGo = 0;
         long currentStep = 0;
         long lastStepTime = millis();
-        Direction direction = LEFT;
+        MotorDirection direction = LEFT;
 
         int motorState = -1;
 
-        void setNextState(Direction direction);
-        void step(Direction direction);
+        void setNextState(MotorDirection direction);
+        void step(MotorDirection direction);
         void stop();
 
 };
