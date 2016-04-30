@@ -1,12 +1,12 @@
-#include "IRremote.h"
-#include "IRremoteInt.h"
+#include "IrRemote.h"
+#include "IrRemoteInt.h"
 
 //+=============================================================================
 // Decodes the received IR message
 // Returns 0 if no data ready, 1 if data ready.
 // Results of decoding are stored in results
 //
-int  IRrecv::decode (decode_results *results)
+int  IrReceiver::decode (IrReading *results)
 {
 	results->rawbuf   = irparams.rawbuf;
 	results->rawlen   = irparams.rawlen;
@@ -20,66 +20,6 @@ int  IRrecv::decode (decode_results *results)
 	if (decodeNEC(results))  return true ;
 #endif
 
-#if DECODE_SONY
-	DBG_PRINTLN("Attempting Sony decode");
-	if (decodeSony(results))  return true ;
-#endif
-
-#if DECODE_SANYO
-	DBG_PRINTLN("Attempting Sanyo decode");
-	if (decodeSanyo(results))  return true ;
-#endif
-
-#if DECODE_MITSUBISHI
-	DBG_PRINTLN("Attempting Mitsubishi decode");
-	if (decodeMitsubishi(results))  return true ;
-#endif
-
-#if DECODE_RC5
-	DBG_PRINTLN("Attempting RC5 decode");
-	if (decodeRC5(results))  return true ;
-#endif
-
-#if DECODE_RC6
-	DBG_PRINTLN("Attempting RC6 decode");
-	if (decodeRC6(results))  return true ;
-#endif
-
-#if DECODE_PANASONIC
-	DBG_PRINTLN("Attempting Panasonic decode");
-	if (decodePanasonic(results))  return true ;
-#endif
-
-#if DECODE_LG
-	DBG_PRINTLN("Attempting LG decode");
-	if (decodeLG(results))  return true ;
-#endif
-
-#if DECODE_JVC
-	DBG_PRINTLN("Attempting JVC decode");
-	if (decodeJVC(results))  return true ;
-#endif
-
-#if DECODE_SAMSUNG
-	DBG_PRINTLN("Attempting SAMSUNG decode");
-	if (decodeSAMSUNG(results))  return true ;
-#endif
-
-#if DECODE_WHYNTER
-	DBG_PRINTLN("Attempting Whynter decode");
-	if (decodeWhynter(results))  return true ;
-#endif
-
-#if DECODE_AIWA_RC_T501
-	DBG_PRINTLN("Attempting Aiwa RC-T501 decode");
-	if (decodeAiwaRCT501(results))  return true ;
-#endif
-
-#if DECODE_DENON
-	DBG_PRINTLN("Attempting Denon decode");
-	if (decodeDenon(results))  return true ;
-#endif
-
 	// decodeHash returns a hash on any input.
 	// Thus, it needs to be last in the list.
 	// If you add any decodes, add them before this.
@@ -91,13 +31,13 @@ int  IRrecv::decode (decode_results *results)
 }
 
 //+=============================================================================
-IRrecv::IRrecv (int recvpin)
+IrReceiver::IrReceiver (int recvpin)
 {
 	irparams.recvpin = recvpin;
 	irparams.blinkflag = 0;
 }
 
-IRrecv::IRrecv (int recvpin, int blinkpin)
+IrReceiver::IrReceiver (int recvpin, int blinkpin)
 {
 	irparams.recvpin = recvpin;
 	irparams.blinkpin = blinkpin;
@@ -110,7 +50,7 @@ IRrecv::IRrecv (int recvpin, int blinkpin)
 //+=============================================================================
 // initialization
 //
-void  IRrecv::enableIRIn ( )
+void  IrReceiver::enableIRIn ( )
 {
 	cli();
 	// Setup pulse clock timer interrupt
@@ -137,7 +77,7 @@ void  IRrecv::enableIRIn ( )
 //+=============================================================================
 // Enable/disable blinking of pin 13 on IR processing
 //
-void  IRrecv::blink13 (int blinkflag)
+void  IrReceiver::blink13 (int blinkflag)
 {
 	irparams.blinkflag = blinkflag;
 	if (blinkflag)  pinMode(BLINKLED, OUTPUT) ;
@@ -146,14 +86,14 @@ void  IRrecv::blink13 (int blinkflag)
 //+=============================================================================
 // Return if receiving new IR signals
 // 
-bool  IRrecv::isIdle ( ) 
+bool  IrReceiver::isIdle ( ) 
 {
  return (irparams.rcvstate == STATE_IDLE || irparams.rcvstate == STATE_STOP) ? true : false;
 }
 //+=============================================================================
 // Restart the ISR state machine
 //
-void  IRrecv::resume ( )
+void  IrReceiver::resume ( )
 {
 	irparams.rcvstate = STATE_IDLE;
 	irparams.rawlen = 0;
@@ -176,7 +116,7 @@ void  IRrecv::resume ( )
 // 1 if newval is equal, and 2 if newval is longer
 // Use a tolerance of 20%
 //
-int  IRrecv::compare (unsigned int oldval,  unsigned int newval)
+int  IrReceiver::compare (unsigned int oldval,  unsigned int newval)
 {
 	if      (newval < oldval * .8)  return 0 ;
 	else if (oldval < newval * .8)  return 2 ;
@@ -192,7 +132,7 @@ int  IRrecv::compare (unsigned int oldval,  unsigned int newval)
 #define FNV_PRIME_32 16777619
 #define FNV_BASIS_32 2166136261
 
-long  IRrecv::decodeHash (decode_results *results)
+long  IrReceiver::decodeHash (IrReading *results)
 {
 	long  hash = FNV_BASIS_32;
 

@@ -22,8 +22,8 @@
 
 // Defining IR_GLOBAL here allows us to declare the instantiation of global variables
 #define IR_GLOBAL
-#	include "IRremote.h"
-#	include "IRremoteInt.h"
+#	include "IrRemote.h"
+#	include "IrRemoteInt.h"
 #undef IR_GLOBAL
 
 //+=============================================================================

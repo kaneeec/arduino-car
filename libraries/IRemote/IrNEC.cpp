@@ -1,5 +1,5 @@
-#include "IRremote.h"
-#include "IRremoteInt.h"
+#include "IrRemote.h"
+#include "IrRemoteInt.h"
 
 //==============================================================================
 //                           N   N  EEEEE   CCCC
@@ -19,7 +19,7 @@
 
 //+=============================================================================
 #if SEND_NEC
-void  IRsend::sendNEC (unsigned long data,  int nbits)
+void  IrSender::sendNEC (unsigned long data,  int nbits)
 {
 	// Set IR carrier frequency
 	enableIROut(38);
@@ -49,7 +49,7 @@ void  IRsend::sendNEC (unsigned long data,  int nbits)
 // NECs have a repeat only 4 items long
 //
 #if DECODE_NEC
-bool  IRrecv::decodeNEC (decode_results *results)
+bool  IrReceiver::decodeNEC (IrReading *results)
 {
 	long  data   = 0;  // We decode in to here; Start with nothing
 	int   offset = 1;  // Index in to results; Skip first entry!?
