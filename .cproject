@@ -21,8 +21,6 @@
 								<option id="it.baeyens.arduino.compiler.cpp.sketch.option.incpath.1143257745" name="Include Paths (-I)" superClass="it.baeyens.arduino.compiler.cpp.sketch.option.incpath" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/car/core/core}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/car/core/variant}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/car/libraries/Stepper}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/car/libraries/Stepper/src}&quot;"/>
 								</option>
 								<inputType id="it.baeyens.arduino.compiler.cpp.sketch.input.1249544712" name="CPP source files" superClass="it.baeyens.arduino.compiler.cpp.sketch.input"/>
 							</tool>
@@ -30,8 +28,6 @@
 								<option id="it.baeyens.arduino.compiler.c.sketch.option.incpath.1931716493" name="Include Paths (-I)" superClass="it.baeyens.arduino.compiler.c.sketch.option.incpath" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/car/core/core}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/car/core/variant}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/car/libraries/Stepper}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/car/libraries/Stepper/src}&quot;"/>
 								</option>
 								<inputType id="it.baeyens.arduino.compiler.c.sketch.input.787559151" name="C Source Files" superClass="it.baeyens.arduino.compiler.c.sketch.input"/>
 							</tool>
