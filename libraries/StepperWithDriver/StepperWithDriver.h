@@ -1,9 +1,7 @@
 #ifndef LIBRARIES_STEPPERWITHDRIVER_STEPPERWITHDRIVER_H_
 #define LIBRARIES_STEPPERWITHDRIVER_STEPPERWITHDRIVER_H_
 
-enum Direction {
-    LEFT, RIGHT
-};
+#include "../Commons/MotorUtils.h"
 
 class StepperWithDriver {
 
@@ -33,6 +31,7 @@ class StepperWithDriver {
         void setNextState(Direction direction);
         void step(Direction direction);
         void stop();
+
 };
 
 #endif /* LIBRARIES_STEPPERWITHDRIVER_STEPPERWITHDRIVER_H_ */
