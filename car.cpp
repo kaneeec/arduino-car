@@ -4,29 +4,29 @@
 #include "libraries/IRemote/IrRemote.h"
 #include "libraries/IRemote/IrRemoteInt.h"
 
-const int IR_IN = 5;
-
-const long IR_START_STOP = 16712445;
+const long IR_OK = 16712445;
 const long IR_LEFT = 16720605;
 const long IR_RIGHT = 16761405;
-const long IR_FORWARDS = 16736925;
-const long IR_BACKWARDS = 16754775;
+const long IR_UP = 16736925;
+const long IR_DOWN = 16754775;
 const long IR_STAR = 16728765;
 const long IR_HASH = 16732845;
 
-void readIr();
+enum CarControl {
+    MANUAL, AI
+};
 
 StepperWithDriver stepper(8, 9, 10, 11);
 DCMotor dcMotor(2, 3);
 
-IrReceiver irReceiver(IR_IN);
+IrReceiver irReceiver(5);
 IrReading irReading;
 
-Direction direction = LEFT;
+CarControl control = MANUAL;
+
+void readIr();
 
 void setup() {
-    Serial.begin(9600);
-    stepper.setAngle(360, direction);
     irReceiver.enableIRIn();
 }
 
@@ -38,27 +38,29 @@ void loop() {
 
 void readIr() {
     if (irReceiver.decode(&irReading)) {
-        if (irReading.value == IR_START_STOP) {
-            if (dcMotor.isRunning()) {
-                dcMotor.stop();
-            } else {
-                dcMotor.start();
+        if (control == MANUAL) {
+            if (irReading.value == IR_OK) {
+                if (dcMotor.isRunning()) {
+                    dcMotor.stop();
+                } else {
+                    dcMotor.start();
+                }
+            } else if (irReading.value == IR_LEFT) {
+                stepper.setAngle(45, LEFT);
+            } else if (irReading.value == IR_RIGHT) {
+                stepper.setAngle(45, RIGHT);
+            } else if (irReading.value == IR_UP) {
+                dcMotor.setDirection(FORWARDS);
+            } else if (irReading.value == IR_DOWN) {
+                dcMotor.setDirection(BACKWARDS);
             }
         }
-        if (irReading.value == IR_LEFT) {
-            direction = LEFT;
-            stepper.setAngle(45, LEFT);
+
+        if (irReading.value == IR_STAR) {
+            control = MANUAL;
+        } else if (irReading.value == IR_HASH) {
+            control = AI;
         }
-        if (irReading.value == IR_RIGHT) {
-            stepper.setAngle(45, RIGHT);
-        }
-        if (irReading.value == IR_FORWARDS) {
-            dcMotor.setDirection(FORWARDS);
-        }
-        if (irReading.value == IR_BACKWARDS) {
-            dcMotor.setDirection(BACKWARDS);
-        }
-        Serial.println(irReading.value);
         irReceiver.resume(); // Receive the next value
     }
 }
