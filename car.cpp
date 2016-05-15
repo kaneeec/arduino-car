@@ -46,9 +46,9 @@ void readIr() {
                     dcMotor.start();
                 }
             } else if (irReading.value == IR_LEFT) {
-                stepper.setAngle(45, LEFT);
+                stepper.setAngle(10, LEFT);
             } else if (irReading.value == IR_RIGHT) {
-                stepper.setAngle(45, RIGHT);
+                stepper.setAngle(10, RIGHT);
             } else if (irReading.value == IR_UP) {
                 dcMotor.setDirection(FORWARDS);
             } else if (irReading.value == IR_DOWN) {
