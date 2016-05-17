@@ -41,5 +41,15 @@
 			<type>2</type>
 			<location>/home/tzeman/share/eclipseArduino/arduinoPlugin/packages/arduino/hardware/avr/1.6.10/variants/eightanaloginputs</location>
 		</link>
+		<link>
+			<name>libraries/Servo</name>
+			<type>2</type>
+			<location>/home/tzeman/share/eclipseArduino/arduinoPlugin/libraries/Servo/1.1.1</location>
+		</link>
+		<link>
+			<name>libraries/SoftwareSerial</name>
+			<type>2</type>
+			<location>/home/tzeman/share/eclipseArduino/arduinoPlugin/packages/arduino/hardware/avr/1.6.10/libraries/SoftwareSerial</location>
+		</link>
 	</linkedResources>
 </projectDescription>

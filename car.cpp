@@ -1,8 +1,7 @@
 #include "Arduino.h"
 #include "libraries/StepperWithDriver/StepperWithDriver.h"
 #include "libraries/DCMotor/DCMotor.h"
-#include "libraries/IRemote/IrRemote.h"
-#include "libraries/IRemote/IrRemoteInt.h"
+#include "libraries/BTController/BTController.h"
 
 const long IR_OK = 16712445;
 const long IR_LEFT = 16720605;
@@ -16,51 +15,41 @@ enum CarControl {
     MANUAL, AI
 };
 
-StepperWithDriver stepper(8, 9, 10, 11);
+StepperWithDriver stepper(6, 7, 8, 9);
 DCMotor dcMotor(2, 3);
-
-IrReceiver irReceiver(5);
-IrReading irReading;
+BTController bt(10, 11);
 
 CarControl control = MANUAL;
 
-void readIr();
+void readBtController();
 
 void setup() {
-    irReceiver.enableIRIn();
 }
 
 void loop() {
-    readIr();
+    readBtController();
     stepper.run();
     dcMotor.run();
 }
 
-void readIr() {
-    if (irReceiver.decode(&irReading)) {
-        if (control == MANUAL) {
-            if (irReading.value == IR_OK) {
-                if (dcMotor.isRunning()) {
-                    dcMotor.stop();
-                } else {
-                    dcMotor.start();
-                }
-            } else if (irReading.value == IR_LEFT) {
-                stepper.setAngle(10, LEFT);
-            } else if (irReading.value == IR_RIGHT) {
-                stepper.setAngle(10, RIGHT);
-            } else if (irReading.value == IR_UP) {
-                dcMotor.setDirection(FORWARDS);
-            } else if (irReading.value == IR_DOWN) {
-                dcMotor.setDirection(BACKWARDS);
-            }
+void readBtController() {
+    if (bt.read()) {
+        String value = bt.getValue();
+
+        if (value.indexOf('1') >= 0) {
+            dcMotor.setDirection(FORWARDS);
+            dcMotor.start();
+        } else if (value.indexOf('2') >= 0) {
+            dcMotor.setDirection(BACKWARDS);
+            dcMotor.start();
+        } else {
+            dcMotor.stop();
         }
 
-        if (irReading.value == IR_STAR) {
-            control = MANUAL;
-        } else if (irReading.value == IR_HASH) {
-            control = AI;
+        if (value.indexOf('3') >= 0) {
+            stepper.setAngle(3, LEFT);
+        } else if (value.indexOf('4') >= 0) {
+            stepper.setAngle(3, RIGHT);
         }
-        irReceiver.resume(); // Receive the next value
     }
 }
